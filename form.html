@@ -1,0 +1,77 @@
+<!DOCTYPE html> 
+	<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style">
+	<link rel="stylesheet" href="css/jquerymobile-1.4.0.min.css">
+	<link rel="stylesheet" href="css/jquery.mobile-1.4.0.min.css">
+	<style type="text/css">.ui-page{background-image:url(images/formbackground.gif);background-size:100% ;background-repeat: no-repeat; background-attachment:fixed;}</style>
+	<script src="js/jquery.js"></script>
+	<script src="js/jquery.mobile-1.4.0.min.js"></script>
+	<script src="js/fastclick.js"></script>
+	<script>$('input[type=text], textarea').val('');
+	$(function(){FastClick.attach(document.body);});</script>
+	</head>
+	<body><div data-role="page" class="page" data-theme="">
+	<div  data-role="header" data-theme="">
+	<a href="#" data-rel="back" class="ui-btn ui-icon-carat-l ui-btn-icon-notext"></a>
+	<a href="#navigation" id="menubttn"  data-rel="popup" class="ui-btn-right ui-btn ui-btn-inline ui-corner-all ui-btn-icon-right ui-icon-bars">&nbsp;&nbsp;&nbsp;</a><h1>Form Menu Title</h1>
+	</div>
+	<div data-role="content"><form id="form" name="form"><h3>Form Title</h3><BR>Form Item 1<input type="text" id="form1" name="form1">Form Item 2<input type="text" id="form2" name="form2">Form Item 3<input type="text" id="form3" name="form3">Form Item 4<input type="text" id="form4" name="form4">Form Item 5<textarea id="form5" name="form5"></textarea><input type="submit" id="submit" Value="Send"></form><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div>
+<div id="navigation" data-role="popup" data-theme="none">
+	<ul style="min-width:210px;" data-role="listview" data-inset="true">
+	<li><a href="index.html" data-transition="flip" class="nvmenu" style="background-image:url(images/indexhtml.gif);background-size:100% 100%;background-repeat: no-repeat;" id="m1">Football calendar</a></li>
+	<li><a href="form.html" data-transition="flip" class="nvmenu" style="background-image:url(images/formhtml.gif);background-size:100% 100%;background-repeat: no-repeat;" id="m2">Form</a></li>
+	<li><a href="kiss.html" data-transition="flip" class="nvmenu" style="background-image:url(images/kisshtml.gif);background-size:100% 100%;background-repeat: no-repeat;" id="m3">QR Code</a></li>
+	<li><a href="playground.html" data-transition="flip" class="nvmenu" style="background-image:url(images/playgroundhtml.gif);background-size:100% 100%;background-repeat: no-repeat;" id="m4">Playground</a></li>
+	<li><a href="video.html" data-transition="flip" class="nvmenu" style="background-image:url(images/videohtml.gif);background-size:100% 100%;background-repeat: no-repeat;" id="m5">Video</a></li>
+	<li><a href="album.html" data-transition="flip" class="nvmenu" style="background-image:url(images/albumhtml.gif);background-size:100% 100%;background-repeat: no-repeat;" id="m6">Album</a></li>
+	<li><a href="poster.html" data-transition="flip" class="nvmenu" style="background-image:url(images/posterhtml.gif);background-size:100% 100%;background-repeat: no-repeat;" id="m7">Poster</a></li>
+	</ul></div><!-- /navigation -->
+	</ul></div><!-- /navigation -->
+	</div></body>
+	</html>
+	<script>
+	$("#form").submit(function() {var infhref= localStorage.getItem("infhref");
+		if(infhref.indexOf("http") == -1){infhref= "http://"+infhref;}		
+		if(infhref.substr(infhref.length - 1)=="/"){var postphp = "post.php";}else{var postphp = "/post.php";}
+		var url = infhref+postphp;
+		
+	var order = $("form").serialize();
+	$.ajax({
+    type: "POST",
+    url: url,
+    data: { 'order': order },
+    cache: false,
+    success:function(data){
+                alert("Sent");			
+				window.location = "form.html";
+            },
+            error: function(){
+				window.location = "form.html";
+            }
+    });
+
+});
+
+
+$('.nvmenu').click(function() {
+		var nvmenuhtml = $(this).attr('href');
+		$(document).on({"pageshow": function () {window.location = nvmenuhtml;}}, '.page');
+;})
+
+var albummenu='';var slt='';
+if(localStorage.getItem("formmenu"))albummenu =  $.parseJSON(localStorage.getItem("formmenu"));
+var menusdir='';var menushtml='';var pigsmenu='';
+for(var j=0;j < albummenu.length;j++){
+if(j)menusdir = j+"/";
+if($("#formhr").text()==albummenu[j]){slt='data-icon="check"';}else{slt='';}
+if(albummenu[j])menushtml += '<li '+slt+'><a href="'+menusdir+'form.html" data-ajax="false" style="background-image:url('+menusdir+'images/albumhtml.gif);background-size:100% 100%;background-repeat: no-repeat;">'+albummenu[j]+'</a></li>';
+;}
+
+if(menushtml){$('#uls').html(menushtml);$('#uls').listview('refresh');}
+else{$('#menubttns').css('display','none');}
+	</script>
